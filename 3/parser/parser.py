@@ -51,6 +51,7 @@ def parse(query: str, pages_count: int = 0):
         sum(ratings) / len(ratings),
         datetime.today().strftime("%Y-%m-%d"),
     )
+    return "OK"
 
 
 def submit(
