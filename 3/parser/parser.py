@@ -38,7 +38,9 @@ def parse(query: str, pages_count: int = 0):
     prices = []
     ratings = []
     for page_number in range(1, pages_count + 1):
-        driver.get(f"https://market.yandex.ru/search?text={query}&page={page_number}")
+        driver.get(
+            f"https://market.yandex.ru/search?text={query}&page={page_number}"
+        )
         prices += parse_prices(driver)
         ratings += parse_ratings(driver)
         driver.implicitly_wait(0.5)
@@ -73,8 +75,10 @@ def submit(
             print("Connection successful!")
             with conn.cursor() as cur:
                 cur.execute(
-                    "INSERT INTO parser_results(query,amount_parsed,avg_price,max_price,avg_rating,time)\n"
-                    f"VALUES ('{query}',{amount_parsed},{avg_price},{max_price},{avg_rating},'{str(time)}')"
+                    "INSERT INTO parser_results(query, amount_parsed, "
+                    "avg_price, max_price, avg_rating, time)\n"
+                    f"VALUES ('{query}', {amount_parsed}, {avg_price}, "
+                    f"{max_price}, {avg_rating}, '{str(time)}')"
                 )
     except psycopg2.Error as e:
         print(f"Error connecting to the database: {e}")
@@ -92,9 +96,13 @@ def get(query: str = None):
             port=os.getenv("DB_PORT"),
         ) as conn:
             print("Connection successful!")
-            with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-                request = """SELECT query, amount_parsed, avg_price,
-                 max_price, avg_rating, time FROM parser_results"""
+            with conn.cursor(
+                cursor_factory=psycopg2.extras.RealDictCursor
+            ) as cur:
+                request = (
+                    "SELECT query, amount_parsed, avg_price, "
+                    "max_price, avg_rating, time FROM parser_results"
+                )
                 if query is not None:
                     request += f"\nWHERE query='{query}'"
                 cur.execute(request)
