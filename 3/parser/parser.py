@@ -45,6 +45,10 @@ def parse(query: str, pages_count: int = 0):
         ratings += parse_ratings(driver)
         driver.implicitly_wait(0.5)
     driver.close()
+    if len(prices) == 0:
+        prices=[-1]
+    if len(ratings) == 0:
+        ratings=[-1]
     submit(
         query,
         len(prices),
